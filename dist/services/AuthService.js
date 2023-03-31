@@ -14,7 +14,7 @@ const User_1 = require("../models/User");
 class AuthService {
     login(request) {
         return __awaiter(this, void 0, void 0, function* () {
-            let user = yield User_1.User.findOne({ email: request.email, password: request.password });
+            const user = yield User_1.User.findOne({ email: request.email, password: request.password });
             if (user) {
                 return user;
             }

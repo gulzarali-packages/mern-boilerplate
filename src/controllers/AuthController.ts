@@ -1,4 +1,4 @@
-import {AuthService} from '../services/AuthService';
+import { AuthService } from '../services/AuthService';
 import { LoginRequest } from '../requests/user/LoginRequest';
 import { RegisterRequest } from '../requests/user/RegisterRequest';
 import { validate } from 'class-validator';

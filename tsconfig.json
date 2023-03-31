@@ -1,14 +1,12 @@
 {
   "compilerOptions": {
-    "target": "es6",
     "module": "commonjs",
-    "outDir": "./dist",
-    "rootDir": "./src",
     "esModuleInterop": true,
-    "resolveJsonModule": true,
+    "target": "es6",
+    "moduleResolution": "node",
     "sourceMap": true,
-    "experimentalDecorators": true
+    "outDir": "dist",
+    "experimentalDecorators": true,
   },
-  "include": ["./src/**/*"],
-  "exclude": ["node_modules", "**/*.test.ts"]
+  "lib": ["es2015"]
 }

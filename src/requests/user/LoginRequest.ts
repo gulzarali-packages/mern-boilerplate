@@ -9,7 +9,7 @@ export class LoginRequest {
     @IsDefined()
     @IsString()
     @IsEmail()
-    email!: string;
+    email!:     string;
 
     @IsDefined()
     @IsString()
@@ -17,7 +17,7 @@ export class LoginRequest {
     password!: string;
 
     constructor(email = '', password = '') {
-        this.email = email;
-        this.password = password;
+        this.email      = email;
+        this.password   = password;
     }
 }
