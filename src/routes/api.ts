@@ -11,6 +11,6 @@ router.post('/login', passport.authenticate('local', {
     failureFlash: true
 }), authController.login);
 
-router.get('/register', (req, res) => authController.register(req, res));
+router.post('/register', (req, res) => authController.register(req, res));
 
 export default router;

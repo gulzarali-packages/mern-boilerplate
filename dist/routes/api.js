@@ -13,6 +13,6 @@ router.post('/login', passport_1.default.authenticate('local', {
     failureRedirect: '/login',
     failureFlash: true
 }), AuthController_1.default.login);
-router.get('/register', (req, res) => AuthController_1.default.register(req, res));
+router.post('/register', (req, res) => AuthController_1.default.register(req, res));
 exports.default = router;
 //# sourceMappingURL=api.js.map

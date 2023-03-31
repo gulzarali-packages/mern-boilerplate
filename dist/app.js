@@ -13,14 +13,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const passport_config_1 = __importDefault(require("./config/passport.config"));
-const express_session_1 = __importDefault(require("express-session"));
-const api_1 = __importDefault(require("./routes/api"));
 const mongoose_1 = __importDefault(require("mongoose"));
+const express_session_1 = __importDefault(require("express-session"));
+const passport_config_1 = __importDefault(require("./config/passport.config"));
+const api_1 = __importDefault(require("./routes/api"));
 const config_1 = __importDefault(require("./config/config"));
 const app = (0, express_1.default)();
-const port = process.env.APP_PORT;
-const db = process.env.DB_URL;
 function startServer() {
     return __awaiter(this, void 0, void 0, function* () {
         yield mongoose_1.default.connect(config_1.default.databaseURL, {

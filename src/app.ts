@@ -1,15 +1,12 @@
 import express from 'express';
-
-import passport from './config/passport.config';
+import mongoose from 'mongoose';
 import session from 'express-session';
 
+import passport from './config/passport.config';
 import router from './routes/api';
-import mongoose from 'mongoose';
 import config from './config/config';
 
 const app = express();
-const port = process.env.APP_PORT;
-const db = process.env.DB_URL;
 
 async function startServer() {
   await mongoose.connect(config.databaseURL as any, {

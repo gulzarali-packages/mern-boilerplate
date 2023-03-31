@@ -19,7 +19,13 @@ class AuthController {
                 const registerRequest = new RegisterRequest_1.RegisterRequest(request);
                 const errors = yield (0, class_validator_1.validate)(registerRequest);
                 if (errors.length > 0) {
-                    return response.status(422).json({ errors });
+                    const errorResponse = {};
+                    errors.forEach((error) => {
+                        Object.keys(error.constraints).forEach(key => {
+                            errorResponse[error.property] = error.constraints[key];
+                        });
+                    });
+                    return response.status(422).json({ errors: errorResponse });
                 }
                 return response.status(200).json(this.authService.register(request));
             }
