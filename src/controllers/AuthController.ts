@@ -1,7 +1,7 @@
-import { AuthService } from '../services/AuthService';
-import { LoginRequest } from '../requests/user/LoginRequest';
-import { RegisterRequest } from '../requests/user/RegisterRequest';
-import { validate } from 'class-validator';
+import { AuthService }          from '../services/AuthService';
+import { LoginRequest }         from '../requests/user/LoginRequest';
+import { RegisterRequest }      from '../requests/user/RegisterRequest';
+import { validate }             from 'class-validator';
 
 class AuthController {
     private authService: AuthService;
@@ -29,7 +29,7 @@ class AuthController {
             if (errors.length > 0) {
                 return response.status(422).json({ errors });
             }
-            return this.authService.login(request);
+            return this.authService.login(request.body.email, request.body.password);
         } catch (error) {
             console.error(error);
             return response.status(500).json({ message: 'Internal server error' });

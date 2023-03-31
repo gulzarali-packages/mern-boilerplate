@@ -37,7 +37,7 @@ class AuthController {
                 if (errors.length > 0) {
                     return response.status(422).json({ errors });
                 }
-                return this.authService.login(request);
+                return this.authService.login(request.body.email, request.body.password);
             }
             catch (error) {
                 console.error(error);

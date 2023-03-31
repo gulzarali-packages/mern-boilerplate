@@ -8,21 +8,32 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
-const User_1 = require("../models/User");
+const User_1 = __importDefault(require("../models/User"));
+const passport_1 = __importDefault(require("passport"));
 class AuthService {
-    login(request) {
+    login(email, password) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = yield User_1.User.findOne({ email: request.email, password: request.password });
-            if (user) {
-                return user;
-            }
+            return new Promise((resolve, reject) => {
+                passport_1.default.authenticate('local', (err, user, info) => {
+                    if (err) {
+                        reject(err);
+                    }
+                    if (!user) {
+                        reject('Incorrect email or password');
+                    }
+                    resolve(user);
+                })({ body: { email, password } });
+            });
         });
     }
     register(request) {
         return __awaiter(this, void 0, void 0, function* () {
-            const newUser = new User_1.User({
+            const newUser = new User_1.default({
                 name: request.body.name,
                 email: request.body.email,
                 password: request.body.password
