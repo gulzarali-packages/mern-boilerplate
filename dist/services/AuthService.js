@@ -13,30 +13,44 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const User_1 = __importDefault(require("../models/User"));
-const passport_1 = __importDefault(require("passport"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const bcrypt_1 = __importDefault(require("bcrypt"));
 class AuthService {
-    login(email, password) {
+    login(request) {
         return __awaiter(this, void 0, void 0, function* () {
-            return new Promise((resolve, reject) => {
-                passport_1.default.authenticate('local', (err, user, info) => {
-                    if (err) {
-                        reject(err);
-                    }
-                    if (!user) {
-                        reject('Incorrect email or password');
-                    }
-                    resolve(user);
-                })({ body: { email, password } });
-            });
+            try {
+                const { email, password } = request;
+                // Find user by email
+                const user = yield User_1.default.findOne({ email });
+                if (!user) {
+                    throw new Error('Invalid email or password');
+                }
+                // Compare password hashes
+                const match = yield bcrypt_1.default.compare(password, user.password);
+                if (!match) {
+                    throw new Error('Invalid email or password');
+                }
+                // Generate JWT token
+                const token = jsonwebtoken_1.default.sign({ userId: user._id }, 'your_jwt_secret_key', { expiresIn: '1h' });
+                return token;
+            }
+            catch (err) {
+                console.error(err);
+                throw new Error('Server error');
+            }
         });
     }
-    register(data) {
+    register(request) {
         return __awaiter(this, void 0, void 0, function* () {
+            const { userName, email, password } = request;
+            // Hash password
+            const hashedPassword = yield bcrypt_1.default.hash(password, 10);
             const newUser = new User_1.default({
-                userName: data.userName,
-                email: data.email,
-                password: data.password
+                userName,
+                email,
+                password: hashedPassword
             });
+            // Save user to the database
             return newUser.save();
         });
     }

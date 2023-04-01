@@ -17,6 +17,7 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const express_session_1 = __importDefault(require("express-session"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const passport_config_1 = __importDefault(require("./config/passport.config"));
+const connect_flash_1 = __importDefault(require("connect-flash"));
 const api_1 = __importDefault(require("./routes/api"));
 const config_1 = __importDefault(require("./config/config"));
 let port = config_1.default.port;
@@ -29,6 +30,7 @@ function startServer() {
         console.log('Connected to MongoDB successfully!');
     });
 }
+app.use((0, connect_flash_1.default)());
 app.use(body_parser_1.default.json());
 app.use(body_parser_1.default.urlencoded({ extended: true }));
 app.use((0, express_session_1.default)({

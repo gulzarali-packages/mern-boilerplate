@@ -8,6 +8,7 @@ dotenv_1.default.config();
 const config = {
     port: process.env.PORT,
     databaseURL: process.env.DATABASE_URL,
+    jwtSecretKey: process.env.JWT_SECRET_KEY
 };
 exports.default = config;
 //# sourceMappingURL=config.js.map

@@ -16,8 +16,8 @@ export class LoginRequest {
     @MinLength(8)
     password!: string;
 
-    constructor(email = '', password = '') {
-        this.email      = email;
-        this.password   = password;
+    constructor(request) {
+        this.email      = request?.body?.email;
+        this.password   = request?.body?.password;
     }
 }

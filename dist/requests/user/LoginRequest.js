@@ -9,9 +9,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.LoginRequest = void 0;
 const class_validator_1 = require("class-validator");
 class LoginRequest {
-    constructor(email = '', password = '') {
-        this.email = email;
-        this.password = password;
+    constructor(request) {
+        var _a, _b;
+        this.email = (_a = request === null || request === void 0 ? void 0 : request.body) === null || _a === void 0 ? void 0 : _a.email;
+        this.password = (_b = request === null || request === void 0 ? void 0 : request.body) === null || _b === void 0 ? void 0 : _b.password;
     }
 }
 __decorate([

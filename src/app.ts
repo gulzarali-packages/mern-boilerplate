@@ -4,6 +4,7 @@ import session from 'express-session';
 import bodyParser from 'body-parser';
 
 import passport from './config/passport.config';
+import flash from 'connect-flash';
 import router from './routes/api';
 import config from './config/config';
 
@@ -17,6 +18,8 @@ async function startServer() {
   } as any);
   console.log('Connected to MongoDB successfully!');
 }
+
+app.use(flash());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
