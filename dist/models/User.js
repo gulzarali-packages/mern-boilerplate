@@ -34,10 +34,14 @@ const userSchema = new mongoose_1.Schema({
         unique: true,
         required: true,
     },
-    name: {
+    userName: {
         type: String,
         required: true,
     },
+    password: {
+        type: String,
+        required: true
+    }
 });
 userSchema.plugin(passport_local_mongoose_1.default, { usernameField: 'email' });
 const User = mongoose_1.default.model('User', userSchema);

@@ -12,7 +12,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AuthService = void 0;
 const User_1 = __importDefault(require("../models/User"));
 const passport_1 = __importDefault(require("passport"));
 class AuthService {
@@ -31,16 +30,16 @@ class AuthService {
             });
         });
     }
-    register(request) {
+    register(data) {
         return __awaiter(this, void 0, void 0, function* () {
             const newUser = new User_1.default({
-                name: request.body.name,
-                email: request.body.email,
-                password: request.body.password
+                userName: data.userName,
+                email: data.email,
+                password: data.password
             });
-            return newUser;
+            return newUser.save();
         });
     }
 }
-exports.AuthService = AuthService;
+exports.default = new AuthService();
 //# sourceMappingURL=AuthService.js.map

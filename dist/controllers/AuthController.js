@@ -8,15 +8,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const AuthService_1 = __importDefault(require("../services/AuthService"));
 const LoginRequest_1 = require("../requests/user/LoginRequest");
 const RegisterRequest_1 = require("../requests/user/RegisterRequest");
 const class_validator_1 = require("class-validator");
 class AuthController {
-    register(request, response) {
+    register(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const registerRequest = new RegisterRequest_1.RegisterRequest(request);
+                const registerRequest = new RegisterRequest_1.RegisterRequest(req);
                 const errors = yield (0, class_validator_1.validate)(registerRequest);
                 if (errors.length > 0) {
                     const errorResponse = {};
@@ -25,13 +29,14 @@ class AuthController {
                             errorResponse[error.property] = error.constraints[key];
                         });
                     });
-                    return response.status(422).json({ errors: errorResponse });
+                    return res.status(422).json({ errors: errorResponse });
                 }
-                return response.status(200).json(this.authService.register(request));
+                const result = yield AuthService_1.default.register(req.body);
+                return res.status(200).json(result);
             }
             catch (error) {
                 console.error(error);
-                return response.status(500).json({ message: 'Internal server error' });
+                return res.status(500).json({ message: new Error(error) });
             }
         });
     }
@@ -43,7 +48,7 @@ class AuthController {
                 if (errors.length > 0) {
                     return response.status(422).json({ errors });
                 }
-                return this.authService.login(request.body.email, request.body.password);
+                return AuthService_1.default.login(request.body.email, request.body.password);
             }
             catch (error) {
                 console.error(error);

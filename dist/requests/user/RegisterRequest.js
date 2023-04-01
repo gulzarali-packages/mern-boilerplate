@@ -11,6 +11,7 @@ const class_validator_1 = require("class-validator");
 class RegisterRequest {
     constructor(request) {
         var _a, _b, _c;
+        console.log('body', request.body);
         this.userName = (_a = request === null || request === void 0 ? void 0 : request.body) === null || _a === void 0 ? void 0 : _a.userName;
         this.email = (_b = request === null || request === void 0 ? void 0 : request.body) === null || _b === void 0 ? void 0 : _b.email;
         this.password = (_c = request === null || request === void 0 ? void 0 : request.body) === null || _c === void 0 ? void 0 : _c.password;

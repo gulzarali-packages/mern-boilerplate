@@ -21,6 +21,7 @@ export class RegisterRequest {
     userName!: string;
 
     constructor(request) {
+        console.log('body',request.body);
         this.userName   = request?.body?.userName;
         this.email      = request?.body?.email;
         this.password   = request?.body?.password;

@@ -1,7 +1,7 @@
 import User from '../models/User';
 import passport from 'passport';
 
-export class AuthService {
+class AuthService {
     async login(email,password) {
         return new Promise((resolve, reject) => {
             passport.authenticate('local', (err, user, info) => {
@@ -16,13 +16,15 @@ export class AuthService {
         });
     }
 
-    async register(request) {
+    async register(data: any) {
         const newUser = new User({
-            name: request.body.name,
-            email: request.body.email,
-            password: request.body.password
+            userName: data.userName,
+            email: data.email,
+            password: data.password
         });
 
-        return newUser;
+        return newUser.save();
     }
 }
+
+export default new AuthService();

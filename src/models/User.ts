@@ -8,10 +8,14 @@ const userSchema = new Schema<IUser>({
     unique: true,
     required: true,
   },
-  name: {
+  userName: {
     type: String,
     required: true,
   },
+  password: {
+    type: String,
+    required: true
+  }
 });
 
 userSchema.plugin(passportLocalMongoose, { usernameField: 'email' });
