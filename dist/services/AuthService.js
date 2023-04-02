@@ -15,6 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const User_1 = __importDefault(require("../models/User"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const config_1 = __importDefault(require("../config/config"));
+const ObjectDestructurer_1 = __importDefault(require("../lib/helpers/ObjectDestructurer"));
 class AuthService {
     login(request) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -31,8 +33,8 @@ class AuthService {
                     throw new Error('Invalid email or password');
                 }
                 // Generate JWT token
-                const token = jsonwebtoken_1.default.sign({ userId: user._id }, 'your_jwt_secret_key', { expiresIn: '1h' });
-                return token;
+                const token = jsonwebtoken_1.default.sign({ userId: user._id }, config_1.default.jwtSecretKey, { expiresIn: '1h' });
+                return Object.assign(Object.assign({}, ObjectDestructurer_1.default.distruct(user)), { token });
             }
             catch (err) {
                 console.error(err);

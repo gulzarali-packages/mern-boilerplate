@@ -2,11 +2,14 @@ import express from 'express';
 import mongoose from 'mongoose';
 import session from 'express-session';
 import bodyParser from 'body-parser';
+import compression from 'compression';
 
 import passport from './config/passport.config';
 import flash from 'connect-flash';
 import router from './routes/api';
 import config from './config/config';
+import httpResponseMiddleware from './middleware/HttpResponseMiddleware';
+
 
 let port = config.port;
 
@@ -19,6 +22,8 @@ async function startServer() {
   console.log('Connected to MongoDB successfully!');
 }
 
+app.use(httpResponseMiddleware);
+app.use(compression());
 app.use(flash());
 
 app.use(bodyParser.json());

@@ -1,6 +1,8 @@
 import User from '../models/User';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import config from '../config/config';
+import ObjectManipulator from '../lib/helpers/ObjectDestructurer';
 
 class AuthService {
   async login(request) {
@@ -22,9 +24,12 @@ class AuthService {
       }
 
       // Generate JWT token
-      const token = jwt.sign({ userId: user._id }, 'your_jwt_secret_key', { expiresIn: '1h' });
-
-      return token;
+      const token = jwt.sign({ userId: user._id }, config.jwtSecretKey, { expiresIn: '1h' });
+      
+      return {
+        ...ObjectManipulator.distruct(user),
+        token
+      };
     } catch (err) {
       console.error(err);
       throw new Error('Server error');

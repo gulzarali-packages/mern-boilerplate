@@ -16,6 +16,7 @@ const AuthService_1 = __importDefault(require("../services/AuthService"));
 const LoginRequest_1 = require("../requests/user/LoginRequest");
 const RegisterRequest_1 = require("../requests/user/RegisterRequest");
 const class_validator_1 = require("class-validator");
+const LoginResource_1 = __importDefault(require("../resources/LoginResource"));
 class AuthController {
     /**
      * Register new user
@@ -66,7 +67,7 @@ class AuthController {
                     return res.status(422).json({ errors: errorResponse });
                 }
                 const result = yield AuthService_1.default.login(req.body);
-                return res.status(200).json(result);
+                return res.status(200).json(new LoginResource_1.default(result.toObject()));
             }
             catch (error) {
                 return res.status(500).json(new Error(error));

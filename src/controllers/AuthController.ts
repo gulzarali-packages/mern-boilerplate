@@ -2,6 +2,7 @@ import AuthService from '../services/AuthService';
 import { LoginRequest } from '../requests/user/LoginRequest';
 import { RegisterRequest } from '../requests/user/RegisterRequest';
 import { validate, ValidationError } from 'class-validator';
+import LoginResource from '../resources/LoginResource'
 
 class AuthController {
     /**
@@ -50,8 +51,8 @@ class AuthController {
                 });
                 return res.status(422).json({ errors: errorResponse });
             }
-            const result = await AuthService.login(req.body);
-            return res.status(200).json(result);
+            const result:any = await AuthService.login(req.body);
+            return res.status(200).json(new LoginResource(result.toObject()));
         } catch (error) {
             return res.status(500).json(new Error(error));
         }
