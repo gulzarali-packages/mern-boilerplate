@@ -20,6 +20,17 @@ class Generator {
   }
 
   generate(command, name) {
+    if(command == 'make:crud')
+      this.generateCrud(command, name);   
+    else
+      this.generateSingleFile(command, name);
+  }
+
+  generateCrud(command, name){
+
+  }
+
+  generateSingleFile(command, name){
     const binding = this.bindings[command];
     const commandArgs = this.getCommandFileName(command);
 
@@ -55,6 +66,7 @@ switch (command) {
   case 'make:model':
   case 'make:resource':
   case 'make:controller':
+  case 'make:crud':
     if (name) {
       generator.generate(command, name);
     } else {
