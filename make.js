@@ -17,20 +17,73 @@ class Generator {
         'Controller'
       ],
     };
-  }
+
+    this.crudRequests = [
+      'create',
+      'destroy',
+      'show',
+      'update'
+    ];
+  };
 
   generate(command, name) {
-    if(command == 'make:crud')
-      this.generateCrud(command, name);   
+    if (command == 'make:crud')
+      this.generateCrud(command, name);
     else
       this.generateSingleFile(command, name);
   }
 
-  generateCrud(command, name){
+  generateCrud(command, name) {
+    this.generateController(name);
+    this.generateModel(name);
+    this.generateService(name);
+    this.generateRequests(name);
+    this.generateResource(name);
+  }
+  generateController(name) {
+    let template = fs.readFileSync(`${this.templateDir}crud.controller.ts`, 'utf8');
+    template = template.replace(/templateName/g, name);
 
+    fs.writeFileSync(`${getDir('')}${name}Controller.ts`, template);
+    console.log(`${name} controller generated`);
+  }
+  generateModel(name){
+    let template = fs.readFileSync(`${this.templateDir}model.ts`, 'utf8');
+    template = template.replace(/templateName/g, name);
+
+    fs.writeFileSync(`${getDir('')}${name}.ts`, template);
+    console.log(`${name} model generated`);
+  }
+  generateService(name) {
+    let template = fs.readFileSync(`${this.templateDir}crud.service.ts`, 'utf8');
+    template = template.replace(/templateName/g, name);
+
+    fs.writeFileSync(`${getDir('')}${name}Service.ts`, template);
+    console.log(`${name} service generated`);
+  }
+  generateRequests(name) {
+    for (const request of crudRequests) {
+      let template = fs.readFileSync(`${this.templateDir}requests/crud.${request}Request.ts`, 'utf8');
+      template = template.replace(/templateName/g, name);
+
+      fs.writeFileSync(`${getDir('')}/requests/${name}${this.capitalizeFirstLetter(request)}Request.ts`, template);
+      console.log(`${name} ${request} generated`);
+    }
+  }
+  generateResource(name) {
+    for (const resource of crudRequests) {
+      let template = fs.readFileSync(`${this.templateDir}resources/crud.${resource}Resource.ts`, 'utf8');
+      template = template.replace(/templateName/g, name);
+
+      fs.writeFileSync(`${getDir('')}/resources/${name}${this.capitalizeFirstLetter(resource)}Resource.ts`, template);
+      console.log(`${name} ${resource} generated`);
+    }
+  }
+  capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
-  generateSingleFile(command, name){
+  generateSingleFile(command, name) {
     const binding = this.bindings[command];
     const commandArgs = this.getCommandFileName(command);
 
@@ -48,8 +101,8 @@ class Generator {
     console.log(`${name} ${commandArgs[1]} generated`);
   }
 
-  getCommandFileName(command){
-    return  command.split(':');
+  getCommandFileName(command) {
+    return command.split(':');
   }
 }
 

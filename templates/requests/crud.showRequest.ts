@@ -1,14 +1,9 @@
 import {
-    IsDefined,
-    IsEmail,
-    IsString,
-    MinLength
+    IsDefined
 } from 'class-validator';
 
-export class templateNameCreateRequest {
+export class templateNameShowRequest {
     // @IsDefined()
-    // @IsString()
-    // @IsEmail()
     // email!:     string;
 
     constructor(request) {
