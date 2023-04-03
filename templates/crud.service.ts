@@ -1,6 +1,6 @@
 import templateName from '../models/templateName';
 import ObjectManipulator from '../lib/helpers/ObjectDestructurer';
-import { ObjectId } from 'mongoose';
+import { ObjectId, UpdateResult } from 'mongoose';
 
 class templateNameService {
     async index(req) {
@@ -21,6 +21,15 @@ class templateNameService {
         }
     }
 
+    async create(req) {
+        const data = req.body;
+        const record = new templateName(data);
+        await record.save();
+        return {
+            data: record
+        };
+    }
+
     async show(req) {
         const { id } = req.params;
         const record = await templateName.findById(id);
@@ -35,7 +44,7 @@ class templateNameService {
     async update(req) {
         const { id } = req.params;
         const data = req.body;
-        const result = await templateName.updateOne({ _id: ObjectId(id) }, data);
+        const result: UpdateResult = await templateName.updateOne({ _id: new ObjectId(id) }, data);
         if (result.nModified === 0) {
             return false;
         }
@@ -46,7 +55,7 @@ class templateNameService {
 
     async destroy(req) {
         const { id } = req.params;
-        const result = await templateName.deleteOne({ _id: ObjectId(id) });
+        const result = await templateName.deleteOne({ _id: new ObjectId(id) });
         if (result.deletedCount === 0) {
             throw new Error(`Failed to delete templateName record with id ${id}`);
             return false;

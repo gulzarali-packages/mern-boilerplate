@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 
 class Generator {
   constructor() {
@@ -24,7 +25,21 @@ class Generator {
       'show',
       'update'
     ];
+
+    this.crudResources = [
+      'index',
+      'create',
+      'destroy',
+      'show',
+      'update'
+    ];
   };
+
+  createDirectoryIfNotExist(dir) {
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+  }
 
   generate(command, name) {
     if (command == 'make:crud')
@@ -44,39 +59,54 @@ class Generator {
     let template = fs.readFileSync(`${this.templateDir}crud.controller.ts`, 'utf8');
     template = template.replace(/templateName/g, name);
 
-    fs.writeFileSync(`${getDir('')}${name}Controller.ts`, template);
+    const dir = './src/controllers/';
+    const filePath = path.join(dir, `${name}Controller.ts`);
+    this.createDirectoryIfNotExist(dir);
+    fs.writeFileSync(filePath, template);
     console.log(`${name} controller generated`);
   }
   generateModel(name){
     let template = fs.readFileSync(`${this.templateDir}model.ts`, 'utf8');
     template = template.replace(/templateName/g, name);
 
-    fs.writeFileSync(`${getDir('')}${name}.ts`, template);
+    const dir = './src/models/';
+    const filePath = path.join(dir, `${name}.ts`);
+    this.createDirectoryIfNotExist(dir);
+    fs.writeFileSync(filePath, template);
     console.log(`${name} model generated`);
   }
   generateService(name) {
     let template = fs.readFileSync(`${this.templateDir}crud.service.ts`, 'utf8');
     template = template.replace(/templateName/g, name);
 
-    fs.writeFileSync(`${getDir('')}${name}Service.ts`, template);
+    const dir = './src/services/';
+    const filePath = path.join(dir, `${name}Service.ts`);
+    this.createDirectoryIfNotExist(dir);
+    fs.writeFileSync(filePath, template);
     console.log(`${name} service generated`);
   }
   generateRequests(name) {
-    for (const request of crudRequests) {
+    for (const request of this.crudRequests) {
       let template = fs.readFileSync(`${this.templateDir}requests/crud.${request}Request.ts`, 'utf8');
       template = template.replace(/templateName/g, name);
 
-      fs.writeFileSync(`${getDir('')}/requests/${name}${this.capitalizeFirstLetter(request)}Request.ts`, template);
-      console.log(`${name} ${request} generated`);
+      const dir = `./src/requests/${name.toLowerCase()}`;
+      const filePath = path.join(dir, `${name}${this.capitalizeFirstLetter(request)}Request.ts`);
+      this.createDirectoryIfNotExist(dir);
+      fs.writeFileSync(filePath, template);
+      console.log(`${name} ${request} request generated`);
     }
   }
   generateResource(name) {
-    for (const resource of crudRequests) {
+    for (const resource of this.crudResources) {
       let template = fs.readFileSync(`${this.templateDir}resources/crud.${resource}Resource.ts`, 'utf8');
       template = template.replace(/templateName/g, name);
 
-      fs.writeFileSync(`${getDir('')}/resources/${name}${this.capitalizeFirstLetter(resource)}Resource.ts`, template);
-      console.log(`${name} ${resource} generated`);
+      const dir = `./src/resources/${name.toLowerCase()}`;
+      const filePath = path.join(dir, `${name}${this.capitalizeFirstLetter(resource)}Resource.ts`);
+      this.createDirectoryIfNotExist(dir);
+      fs.writeFileSync(filePath, template);
+      console.log(`${name} ${resource} resource generated`);
     }
   }
   capitalizeFirstLetter(string) {
