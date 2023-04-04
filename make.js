@@ -9,6 +9,7 @@ class Generator {
       "make:resource": [(dir) => "./src/resources/", "Resource"],
       "make:controller": [(dir) => "./src/controllers/", "Controller"],
       "make:middleware": [(dir) => "./src/middleware/", ""],
+      "make:seeder": [(dir) => "./src/database/seeders/", ""],
     };
 
     this.crudRequests = ["store", "destroy", "show", "update"];
@@ -128,7 +129,13 @@ class Generator {
     );
     template = template.replace(/templateName/g, name);
 
-    fs.writeFileSync(`${getDir("")}${name}${postFix}.ts`, template);
+    const filePath = path.join(
+      getDir(""),
+      `${name}${postFix}.ts`
+    );
+    this.createDirectoryIfNotExist(getDir(""));
+
+    fs.writeFileSync(filePath, template);
     console.log(`${name} ${commandArgs[1]} generated`);
   }
 
@@ -200,6 +207,7 @@ switch (command) {
   case "route:list":
     routes.listRoutes();
     break;
+  case "make:seeder":
   case "make:model":
   case "make:resource":
   case "make:controller":

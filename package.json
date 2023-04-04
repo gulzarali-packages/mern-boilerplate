@@ -11,6 +11,7 @@
     "route:list": "node make.js route:list",
     "make:controller": "node make.js make:controller",
     "make:model": "node make.js make:model",
+    "make:seeder": "node make.js make:seeder",
     "make:resource": "node make.js make:resource",
     "make:crud": "node make.js make:crud",
     "make:middleware": "node make.js make:middleware"
@@ -19,6 +20,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
     "@types/commander": "^2.12.2",
     "@types/connect-flash": "^0.0.37",
     "@types/express": "^4.17.1",
@@ -42,6 +44,7 @@
     "dotenv": "^16.0.3",
     "express": "^4.17.1",
     "express-session": "^1.17.3",
+    "faker": "^6.6.6",
     "jsonwebtoken": "^9.0.0",
     "module-alias": "^2.2.2",
     "mongodb": "^5.1.0",
