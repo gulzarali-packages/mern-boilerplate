@@ -141,21 +141,49 @@ class Routes {
   listRoutes() {
     const apiRoutes = fs.readFileSync("./src/routes/api.ts", "utf-8");
 
+    // Match all non-commented lines using regex
+    const nonCommentedLines = apiRoutes
+      .split("\n")
+      .filter((line) => !line.trim().startsWith("//"))
+      .join("\n");
+
     // Match all route declarations using regex
-    const routeMatches = apiRoutes.matchAll(
-      /router\.(get|post|put|delete|patch|options|head)\(['"](.+?)['"](?:,\s*(.+?))?/g
+    const routeMatches = nonCommentedLines.matchAll(
+      /router\.(get|post|put|delete|patch|options|head|path)\(['"](.+?)['"](?:,\s*(.+?))?/g
     );
 
     // Loop through all matches and log the routes
+    let data = [];
     for (const match of routeMatches) {
       const method = match[1];
       const path = match[2];
       const handler = match[3] || "";
 
-      console.log(`${method.toUpperCase()} ${path}`);
+      data.push({
+        method: method.toUpperCase(),
+        path: 'api'+path
+      });
+
+      //console.log(`${method.toUpperCase()}   api${path}`);
     }
+
+    const regex = /(?<=path: ')[^']+(?=')/g;
+    const matches = nonCommentedLines.match(regex);
+    if(matches && matches.length > 0){
+      for(const match of matches){
+        data.push({method: 'GET',path: 'api'+match});
+        data.push({method: 'POST',path: 'api'+match});
+        data.push({method: 'GET',path: 'api'+match+'/:id'});
+        data.push({method: 'PUT',path: 'api'+match+'/:id'});
+        data.push({method: 'DELETE',path: 'api'+match+'/:id'});
+      }
+    }
+
+    console.table(data, ["method", "path"], ["left", "left"]);
   }
 }
+
+
 
 // get command-line arguments
 const args = process.argv.slice(2);
@@ -169,7 +197,7 @@ const generator = new Generator();
 const routes = new Routes();
 
 switch (command) {
-  case "list:routes":
+  case "route:list":
     routes.listRoutes();
     break;
   case "make:model":
