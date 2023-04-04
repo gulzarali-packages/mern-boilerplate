@@ -46,7 +46,7 @@ app.use(passport_config_1.default.initialize());
 app.use(passport_config_1.default.session());
 app.use('/api', api_1.default);
 startServer();
-app.listen(3000, 'localhost', () => {
+app.listen(3003, 'localhost', () => {
     console.log('port:', port);
     return console.log(`Express is listening at http://localhost:${config_1.default.port}`);
 });

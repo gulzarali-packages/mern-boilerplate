@@ -25,6 +25,7 @@ class AuthService {
 
       // Generate JWT token
       const token = jwt.sign({ userId: user._id }, config.jwtSecretKey, { expiresIn: '1h' });
+      console.log('token:',token);
       
       return {
         ...ObjectManipulator.distruct(user),

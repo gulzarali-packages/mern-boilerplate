@@ -1,2 +1,8 @@
 # mern-boilerplate
-Boilerplate project to get started with the nodejs backend development.
+Nodejs MVC framework for the fast development process.
+
+## Usage
+you can create models just by running simple command
+```
+node make.js make:model Product
+```

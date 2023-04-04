@@ -67,7 +67,7 @@ class AuthController {
                     return res.status(422).json({ errors: errorResponse });
                 }
                 const result = yield AuthService_1.default.login(req.body);
-                return res.status(200).json(new LoginResource_1.default(result.toObject()));
+                return res.status(200).json(new LoginResource_1.default(result));
             }
             catch (error) {
                 return res.status(500).json(new Error(error));

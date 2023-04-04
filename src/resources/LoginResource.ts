@@ -18,7 +18,8 @@ function formatData(data: LoginResourceProps): any {
     return {
         id: data._id,
         email: data.email,
-        userName: data.userName
+        userName: data.userName,
+        token:data.token
     };
 }
 

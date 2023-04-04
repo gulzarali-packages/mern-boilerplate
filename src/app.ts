@@ -41,7 +41,7 @@ app.use('/api', router);
 startServer();
 
 
-app.listen(3000,'localhost', () => {
+app.listen(3003,'localhost', () => {
   console.log('port:',port);
   return console.log(`Express is listening at http://localhost:${config.port}`);
 });

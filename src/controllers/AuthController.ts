@@ -52,7 +52,7 @@ class AuthController {
                 return res.status(422).json({ errors: errorResponse });
             }
             const result:any = await AuthService.login(req.body);
-            return res.status(200).json(new LoginResource(result.toObject()));
+            return res.status(200).json(new LoginResource(result));
         } catch (error) {
             return res.status(500).json(new Error(error));
         }

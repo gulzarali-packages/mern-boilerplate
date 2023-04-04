@@ -34,6 +34,7 @@ class AuthService {
                 }
                 // Generate JWT token
                 const token = jsonwebtoken_1.default.sign({ userId: user._id }, config_1.default.jwtSecretKey, { expiresIn: '1h' });
+                console.log('token:', token);
                 return Object.assign(Object.assign({}, ObjectDestructurer_1.default.distruct(user)), { token });
             }
             catch (err) {
