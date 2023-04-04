@@ -1,43 +1,20 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
 class Generator {
   constructor() {
-    this.templateDir = './templates/';
+    this.templateDir = "./templates/";
     this.bindings = {
-      'make:model': [
-        dir => './src/models/',
-        ''
-      ],
-      'make:resource': [
-        dir => './src/resources/',
-        'Resource'
-      ],
-      'make:controller': [
-        dir => './src/controllers/',
-        'Controller'
-      ],
-      'make:middleware': [
-        dir => './src/middleware/',
-        ''
-      ],
+      "make:model": [(dir) => "./src/models/", ""],
+      "make:resource": [(dir) => "./src/resources/", "Resource"],
+      "make:controller": [(dir) => "./src/controllers/", "Controller"],
+      "make:middleware": [(dir) => "./src/middleware/", ""],
     };
 
-    this.crudRequests = [
-      'create',
-      'destroy',
-      'show',
-      'update'
-    ];
+    this.crudRequests = ["store", "destroy", "show", "update"];
 
-    this.crudResources = [
-      'index',
-      'create',
-      'destroy',
-      'show',
-      'update'
-    ];
-  };
+    this.crudResources = ["index", "store", "destroy", "show", "update"];
+  }
 
   createDirectoryIfNotExist(dir) {
     if (!fs.existsSync(dir)) {
@@ -46,10 +23,8 @@ class Generator {
   }
 
   generate(command, name) {
-    if (command == 'make:crud')
-      this.generateCrud(command, name);
-    else
-      this.generateSingleFile(command, name);
+    if (command == "make:crud") this.generateCrud(command, name);
+    else this.generateSingleFile(command, name);
   }
 
   generateCrud(command, name) {
@@ -59,31 +34,38 @@ class Generator {
     this.generateRequests(name);
     this.generateResource(name);
   }
+
   generateController(name) {
-    let template = fs.readFileSync(`${this.templateDir}crud.controller.ts`, 'utf8');
+    let template = fs.readFileSync(
+      `${this.templateDir}crud.controller.ts`,
+      "utf8"
+    );
     template = template.replace(/templateName/g, name);
 
-    const dir = './src/controllers/';
+    const dir = "./src/controllers/";
     const filePath = path.join(dir, `${name}Controller.ts`);
     this.createDirectoryIfNotExist(dir);
     fs.writeFileSync(filePath, template);
     console.log(`${name} controller generated`);
   }
-  generateModel(name){
-    let template = fs.readFileSync(`${this.templateDir}model.ts`, 'utf8');
+  generateModel(name) {
+    let template = fs.readFileSync(`${this.templateDir}model.ts`, "utf8");
     template = template.replace(/templateName/g, name);
 
-    const dir = './src/models/';
+    const dir = "./src/models/";
     const filePath = path.join(dir, `${name}.ts`);
     this.createDirectoryIfNotExist(dir);
     fs.writeFileSync(filePath, template);
     console.log(`${name} model generated`);
   }
   generateService(name) {
-    let template = fs.readFileSync(`${this.templateDir}crud.service.ts`, 'utf8');
+    let template = fs.readFileSync(
+      `${this.templateDir}crud.service.ts`,
+      "utf8"
+    );
     template = template.replace(/templateName/g, name);
 
-    const dir = './src/services/';
+    const dir = "./src/services/";
     const filePath = path.join(dir, `${name}Service.ts`);
     this.createDirectoryIfNotExist(dir);
     fs.writeFileSync(filePath, template);
@@ -91,11 +73,17 @@ class Generator {
   }
   generateRequests(name) {
     for (const request of this.crudRequests) {
-      let template = fs.readFileSync(`${this.templateDir}requests/crud.${request}Request.ts`, 'utf8');
+      let template = fs.readFileSync(
+        `${this.templateDir}requests/crud.${request}Request.ts`,
+        "utf8"
+      );
       template = template.replace(/templateName/g, name);
 
       const dir = `./src/requests/${name.toLowerCase()}`;
-      const filePath = path.join(dir, `${name}${this.capitalizeFirstLetter(request)}Request.ts`);
+      const filePath = path.join(
+        dir,
+        `${name}${this.capitalizeFirstLetter(request)}Request.ts`
+      );
       this.createDirectoryIfNotExist(dir);
       fs.writeFileSync(filePath, template);
       console.log(`${name} ${request} request generated`);
@@ -103,11 +91,17 @@ class Generator {
   }
   generateResource(name) {
     for (const resource of this.crudResources) {
-      let template = fs.readFileSync(`${this.templateDir}resources/crud.${resource}Resource.ts`, 'utf8');
+      let template = fs.readFileSync(
+        `${this.templateDir}resources/crud.${resource}Resource.ts`,
+        "utf8"
+      );
       template = template.replace(/templateName/g, name);
 
       const dir = `./src/resources/${name.toLowerCase()}`;
-      const filePath = path.join(dir, `${name}${this.capitalizeFirstLetter(resource)}Resource.ts`);
+      const filePath = path.join(
+        dir,
+        `${name}${this.capitalizeFirstLetter(resource)}Resource.ts`
+      );
       this.createDirectoryIfNotExist(dir);
       fs.writeFileSync(filePath, template);
       console.log(`${name} ${resource} resource generated`);
@@ -122,21 +116,44 @@ class Generator {
     const commandArgs = this.getCommandFileName(command);
 
     if (!binding) {
-      console.error('Invalid command');
+      console.error("Invalid command");
       return;
     }
 
     const [getDir, postFix] = binding;
 
-    let template = fs.readFileSync(`${this.templateDir}${commandArgs[1]}.ts`, 'utf8');
+    let template = fs.readFileSync(
+      `${this.templateDir}${commandArgs[1]}.ts`,
+      "utf8"
+    );
     template = template.replace(/templateName/g, name);
 
-    fs.writeFileSync(`${getDir('')}${name}${postFix}.ts`, template);
+    fs.writeFileSync(`${getDir("")}${name}${postFix}.ts`, template);
     console.log(`${name} ${commandArgs[1]} generated`);
   }
 
   getCommandFileName(command) {
-    return command.split(':');
+    return command.split(":");
+  }
+}
+
+class Routes {
+  listRoutes() {
+    const apiRoutes = fs.readFileSync("./src/routes/api.ts", "utf-8");
+
+    // Match all route declarations using regex
+    const routeMatches = apiRoutes.matchAll(
+      /router\.(get|post|put|delete|patch|options|head)\(['"](.+?)['"](?:,\s*(.+?))?/g
+    );
+
+    // Loop through all matches and log the routes
+    for (const match of routeMatches) {
+      const method = match[1];
+      const path = match[2];
+      const handler = match[3] || "";
+
+      console.log(`${method.toUpperCase()} ${path}`);
+    }
   }
 }
 
@@ -149,19 +166,24 @@ const [command, name] = args;
 // check if command is valid and filename is provided
 const generator = new Generator();
 
+const routes = new Routes();
+
 switch (command) {
-  case 'make:model':
-  case 'make:resource':
-  case 'make:controller':
-  case 'make:crud':
-  case 'make:middleware':
+  case "list:routes":
+    routes.listRoutes();
+    break;
+  case "make:model":
+  case "make:resource":
+  case "make:controller":
+  case "make:crud":
+  case "make:middleware":
     if (name) {
       generator.generate(command, name);
     } else {
-      console.error('Filename not provided');
+      console.error("Filename not provided");
     }
     break;
   default:
-    console.error('Invalid command');
+    console.error("Invalid command");
     break;
 }

@@ -2,7 +2,7 @@ import {
     IsDefined
 } from 'class-validator';
 
-export class templateNameCreateRequest {
+export class templateNameStoreRequest {
     // @IsDefined()
     // email!:     string;
 

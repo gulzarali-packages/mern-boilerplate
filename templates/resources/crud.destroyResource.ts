@@ -1,11 +1,9 @@
-import ApiResponse from '../lib/response/ApiResponse';
+import ApiResponse from '../../lib/response/ApiResponse';
 
-interface templateNameDestroyResourceProps {
-    // your props goes here
-}
+
 
 class templateNameDestroyResource extends ApiResponse {
-    constructor(data: templateNameDestroyResourceProps | templateNameDestroyResourceProps[]) {
+    constructor(data: boolean) {
         if(data){
             super(ApiResponse.success([], 'templateName deleted successfully.'));
         }

@@ -1,6 +1,9 @@
 import templateName from '../models/templateName';
 import ObjectManipulator from '../lib/helpers/ObjectDestructurer';
-import { ObjectId, UpdateResult } from 'mongoose';
+
+import mongoose from 'mongoose';
+export type TObjectId = mongoose.ObjectId;
+export const ObjectId = mongoose.Types.ObjectId;
 
 class templateNameService {
     async index(req) {
@@ -21,7 +24,7 @@ class templateNameService {
         }
     }
 
-    async create(req) {
+    async store(req) {
         const data = req.body;
         const record = new templateName(data);
         await record.save();
@@ -44,12 +47,12 @@ class templateNameService {
     async update(req) {
         const { id } = req.params;
         const data = req.body;
-        const result: UpdateResult = await templateName.updateOne({ _id: new ObjectId(id) }, data);
-        if (result.nModified === 0) {
+        const result = await templateName.updateOne({ _id: new ObjectId(id) }, data);
+        if (result.modifiedCount === 0) {
             return false;
         }
         return {
-            result
+            data
         };
     }
 

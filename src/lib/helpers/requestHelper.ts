@@ -15,9 +15,9 @@ export async function handleRequestValidation(req: Request, res: Response, reque
       });
       return res.status(422).json({ errors: errorResponse });
     }
-
-    const result: any = await serviceFunction(req.body);
-    return res.status(200).json(new resourceObject(result.toObject()));
+    console.log('req:',req.body,serviceFunction);
+    const result: any = await serviceFunction(req);
+    return res.status(200).json(new resourceObject(result));
   } catch (error) {
     return res.status(500).json(new Error(error));
   }

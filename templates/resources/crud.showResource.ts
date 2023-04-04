@@ -1,7 +1,7 @@
-import ApiResponse from '../lib/response/ApiResponse';
+import ApiResponse from '../../lib/response/ApiResponse';
 
 interface templateNameShowResourceProps {
-    // your props goes here
+    name: string
 }
 
 class templateNameShowResource extends ApiResponse {
