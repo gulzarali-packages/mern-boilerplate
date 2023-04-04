@@ -7,7 +7,11 @@
     "start": "nodemon",
     "lint": "eslint . --ext .ts",
     "generate": "node generate.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "make:controller": "node make.js make:controller",
+    "make:model": "node make.js make:model",
+    "make:resource": "node make.js make:resource",
+    "make:crud": "node make.js make:crud"
   },
   "keywords": [],
   "author": "",

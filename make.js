@@ -17,6 +17,10 @@ class Generator {
         dir => './src/controllers/',
         'Controller'
       ],
+      'make:middleware': [
+        dir => './src/middleware/',
+        ''
+      ],
     };
 
     this.crudRequests = [
@@ -150,6 +154,7 @@ switch (command) {
   case 'make:resource':
   case 'make:controller':
   case 'make:crud':
+  case 'make:middleware':
     if (name) {
       generator.generate(command, name);
     } else {
