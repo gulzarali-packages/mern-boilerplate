@@ -10,6 +10,7 @@ class Generator {
       "make:controller": [(dir) => "./src/controllers/", "Controller"],
       "make:middleware": [(dir) => "./src/middleware/", ""],
       "make:seeder": [(dir) => "./src/database/seeders/", ""],
+      "make:job": [(dir) => "./src/jobs/", "Job"],
     };
 
     this.crudRequests = ["store", "destroy", "show", "update"];
@@ -207,6 +208,7 @@ switch (command) {
   case "route:list":
     routes.listRoutes();
     break;
+  case "make:job":
   case "make:seeder":
   case "make:model":
   case "make:resource":
