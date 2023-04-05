@@ -11,6 +11,7 @@ class Generator {
       "make:middleware": [(dir) => "./src/middleware/", ""],
       "make:seeder": [(dir) => "./src/database/seeders/", ""],
       "make:job": [(dir) => "./src/jobs/", "Job"],
+      "make:observer": [(dir) => "./src/observers/", "Observer"],
     };
 
     this.crudRequests = ["store", "destroy", "show", "update"];
@@ -24,9 +25,9 @@ class Generator {
     }
   }
 
-  generate(command, name) {
+  generate(command, name, action) {
     if (command == "make:crud") this.generateCrud(command, name);
-    else this.generateSingleFile(command, name);
+    else this.generateSingleFile(command, name, action);
   }
 
   generateCrud(command, name) {
@@ -113,7 +114,19 @@ class Generator {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
-  generateSingleFile(command, name) {
+  generateObserverKernal() {
+    if (!fs.existsSync("./src/observers/kernal.ts")) {
+      this.createDirectoryIfNotExist('./src/observers');
+
+      let template = fs.readFileSync(
+        `./templates/observer.kernal.ts`,
+        "utf8"
+      );
+      fs.writeFileSync("./src/observers/kernal.ts", template);
+    }
+  }
+
+  generateSingleFile(command, name, action) {
     const binding = this.bindings[command];
     const commandArgs = this.getCommandFileName(command);
 
@@ -129,11 +142,14 @@ class Generator {
       "utf8"
     );
     template = template.replace(/templateName/g, name);
+    let ActionName = "";
+    if (action) {
+      template = template.replace(/actionName/g, action);
+      ActionName = this.capitalizeFirstLetter(action);
+      if (postFix && postFix == "Observer") this.generateObserverKernal();
+    }
 
-    const filePath = path.join(
-      getDir(""),
-      `${name}${postFix}.ts`
-    );
+    const filePath = path.join(getDir(""), `${name}${ActionName}${postFix}.ts`);
     this.createDirectoryIfNotExist(getDir(""));
 
     fs.writeFileSync(filePath, template);
@@ -169,7 +185,7 @@ class Routes {
 
       data.push({
         method: method.toUpperCase(),
-        path: 'api'+path
+        path: "api" + path,
       });
 
       //console.log(`${method.toUpperCase()}   api${path}`);
@@ -177,13 +193,13 @@ class Routes {
 
     const regex = /(?<=path: ')[^']+(?=')/g;
     const matches = nonCommentedLines.match(regex);
-    if(matches && matches.length > 0){
-      for(const match of matches){
-        data.push({method: 'GET',path: 'api'+match});
-        data.push({method: 'POST',path: 'api'+match});
-        data.push({method: 'GET',path: 'api'+match+'/:id'});
-        data.push({method: 'PUT',path: 'api'+match+'/:id'});
-        data.push({method: 'DELETE',path: 'api'+match+'/:id'});
+    if (matches && matches.length > 0) {
+      for (const match of matches) {
+        data.push({ method: "GET", path: "api" + match });
+        data.push({ method: "POST", path: "api" + match });
+        data.push({ method: "GET", path: "api" + match + "/:id" });
+        data.push({ method: "PUT", path: "api" + match + "/:id" });
+        data.push({ method: "DELETE", path: "api" + match + "/:id" });
       }
     }
 
@@ -191,13 +207,11 @@ class Routes {
   }
 }
 
-
-
 // get command-line arguments
 const args = process.argv.slice(2);
 
 // parse command and filename
-const [command, name] = args;
+const [command, name, action] = args;
 
 // check if command is valid and filename is provided
 const generator = new Generator();
@@ -208,6 +222,29 @@ switch (command) {
   case "route:list":
     routes.listRoutes();
     break;
+  case "make:observer":
+    if (name && action) {
+      if (
+        [
+          "save",
+          "remove",
+          "update",
+          "insertMany",
+          "deleteOne",
+          "deleteMany",
+          "findOneAndUpdate",
+        ].includes(action)
+      ) {
+        generator.generate(command, name, action);
+      } else {
+        console.error(
+          "Invalid action is provided. allowed: save, update, findOneAndUpdate, insertMany,remove, deleteOne, deleteMany"
+        );
+      }
+    } else {
+      console.error("Model name or action not provided");
+    }
+    break;
   case "make:job":
   case "make:seeder":
   case "make:model":
@@ -216,7 +253,7 @@ switch (command) {
   case "make:crud":
   case "make:middleware":
     if (name) {
-      generator.generate(command, name);
+      generator.generate(command, name, action);
     } else {
       console.error("Filename not provided");
     }

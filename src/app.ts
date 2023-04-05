@@ -3,11 +3,15 @@ import mongoose from 'mongoose';
 import session from 'express-session';
 import bodyParser from 'body-parser';
 import compression from 'compression';
+import fs from 'fs';
 
 import passport from './config/passport.config';
 import flash from 'connect-flash';
 import router from './routes/api';
 import config from './config/config';
+import './observers/kernal';
+
+
 import httpResponseMiddleware from './middleware/HttpResponseMiddleware';
 
 
