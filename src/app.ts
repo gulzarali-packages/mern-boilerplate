@@ -15,6 +15,7 @@ let port = config.port;
 
 const app = express();
 
+mongoose.set('strictQuery', false);
 async function startServer() {
   await mongoose.connect(config.databaseURL as any, {
     useNewUrlParser: true,

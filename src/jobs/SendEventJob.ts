@@ -1,7 +1,7 @@
 import Redis, {RedisOptions} from 'ioredis';
 import redisConfig from '../config/redis.config';
 
-class templateNameJob {
+class SendEventJob {
   private static redisClient: Redis;
 
   static init(redisOptions: RedisOptions = redisConfig): void {
@@ -29,4 +29,4 @@ class templateNameJob {
   }
 }
 
-export default templateNameJob;
+export default SendEventJob;
