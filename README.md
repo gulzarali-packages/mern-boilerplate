@@ -52,3 +52,28 @@ Here is the megic part, you can create a complete module including controller, m
 npm run make:crud Product
 ```
 After running this command you would get a complete working module.
+#### Resourcefull routes
+```
+import MyController from '../controllers/MyController';
+import { ResourceRouter } from '../lib/http/ResourceRouter';
+
+ const myRouter = new ResourceRouter(router, {
+   path: '/my',
+   controller: MyController,
+ });
+ myRouter.registerRoutes();
+```
+#### Queue jobs
+For queue handeling there we are using redis server, So you have to update the redis configurations under config/redis.config.ts file
+You can create queue jobs by running the following command
+```
+npm run make:job SendEventJob
+```
+Now you can import the job into your class and dispatch the events as:
+```
+import SendEventJob from '../jobs/SendEventJob';
+
+SendEventJob.init();
+SendEventJob.add({message:'hi:'});
+SendEventJob.process();
+```

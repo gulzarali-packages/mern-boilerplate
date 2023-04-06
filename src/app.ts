@@ -9,13 +9,9 @@ import flash from 'connect-flash';
 import router from './routes/api';
 import config from './config/config';
 import './observers/kernal';
-
-
 import httpResponseMiddleware from './middleware/HttpResponseMiddleware';
 
-
 let port = config.port;
-
 const app = express();
 
 mongoose.set('strictQuery', false);
@@ -38,6 +34,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false
 }));
+
 app.use(passport.initialize());
 app.use(passport.session());
 app.use('/api', router);
@@ -50,7 +47,6 @@ app.use((req, res, next) => {
 });
 
 startServer();
-
 
 app.listen(3003, 'localhost', () => {
   console.log('port:', port);
