@@ -7,6 +7,7 @@ class Generator {
     this.bindings = {
       "make:model": [(dir) => "./src/models/", ""],
       "make:resource": [(dir) => "./src/resources/", "Resource"],
+      "make:request": [(dir) => "./src/requests/", "Request"],
       "make:controller": [(dir) => "./src/controllers/", "Controller"],
       "make:middleware": [(dir) => "./src/middleware/", ""],
       "make:seeder": [(dir) => "./src/database/seeders/", ""],
@@ -249,6 +250,7 @@ switch (command) {
   case "make:seeder":
   case "make:model":
   case "make:resource":
+  case "make:request":
   case "make:controller":
   case "make:crud":
   case "make:middleware":

@@ -3,7 +3,6 @@ import mongoose from 'mongoose';
 import session from 'express-session';
 import bodyParser from 'body-parser';
 import compression from 'compression';
-import fs from 'fs';
 
 import passport from './config/passport.config';
 import flash from 'connect-flash';
@@ -35,7 +34,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(session({
-  secret: 'secret-key',
+  secret: config.jwtSecretKey,
   resave: false,
   saveUninitialized: false
 }));
@@ -43,10 +42,17 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use('/api', router);
 
+app.use((req, res, next) => {
+  res.status(404).json({
+    success: false,
+    message: "Oops! The requested resource was not found on this server."
+  });
+});
+
 startServer();
 
 
-app.listen(3003,'localhost', () => {
-  console.log('port:',port);
+app.listen(3003, 'localhost', () => {
+  console.log('port:', port);
   return console.log(`Express is listening at http://localhost:${config.port}`);
 });

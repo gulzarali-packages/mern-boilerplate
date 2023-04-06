@@ -31,6 +31,20 @@ class templateNameController {
     }
 
     /**
+     * create a single record.
+     * @param req The HTTP request object.
+     * @param res The HTTP response object.
+     * @returns Object The single record.
+     */
+    async store(req, res) {
+        try {
+            return res.status(200).json('response submitted');
+        } catch (error) {
+            return res.status(500).json(new Error(error));
+        }
+    }
+
+    /**
      * Update a record.
      * @param req The HTTP request object.
      * @param res The HTTP response object.

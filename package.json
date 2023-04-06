@@ -13,6 +13,7 @@
     "make:model": "node make.js make:model",
     "make:seeder": "node make.js make:seeder",
     "make:resource": "node make.js make:resource",
+    "make:request": "node make.js make:request",
     "make:crud": "node make.js make:crud",
     "make:job": "node make.js make:job",
     "make:observer": "node make.js make:observer",
