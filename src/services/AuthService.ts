@@ -13,19 +13,18 @@ class AuthService {
       const user = await User.findOne({ email });
 
       if (!user) {
-        throw new Error('Invalid email or password');
+        return false;
       }
 
       // Compare password hashes
       const match = await bcrypt.compare(password, user.password);
 
       if (!match) {
-        throw new Error('Invalid email or password');
+        return false;
       }
 
       // Generate JWT token
-      const token = jwt.sign({ userId: user._id }, config.jwtSecretKey, { expiresIn: '1h' });
-      console.log('token:',token);
+      const token = jwt.sign({ userId: user._id }, config.jwtSecretKey, { expiresIn: config.jwtTokenExpiration });
       
       return {
         ...ObjectManipulator.distruct(user),

@@ -14,7 +14,7 @@ import corsConfig from './config/cors.config';
 import './observers/kernal';
 import httpResponseMiddleware from './middleware/HttpResponseMiddleware';
 
-const port:any = config.port;
+const port: any = config.port;
 const app = express();
 
 mongoose.set('strictQuery', false);
@@ -46,6 +46,7 @@ app.use('/api', router);
 app.use((req, res, next) => {
   res.status(404).json({
     success: false,
+    status_code: 404,
     message: "Oops! The requested resource was not found on this server."
   });
 });
@@ -53,5 +54,5 @@ app.use((req, res, next) => {
 startServer();
 
 app.listen(port, 'localhost', () => {
-  return console.log(`Express is listening at http://localhost:${port}`);
+  return console.log(`Express is listening at http://localhost:${config.port}`);
 });

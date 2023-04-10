@@ -9,8 +9,13 @@ interface LoginResourceProps {
 
 class LoginResource extends ApiResponse {
     constructor(data: LoginResourceProps | LoginResourceProps[]) {
-        const formattedData = Array.isArray(data) ? data.map(formatData) : formatData(data);
-        super(ApiResponse.success(formattedData, 'Login successful'));
+        if(!data){
+            super(ApiResponse.error('Invalid email or password'));
+        }
+        else{
+            const formattedData = Array.isArray(data) ? data.map(formatData) : formatData(data);
+            super(ApiResponse.success(formattedData, 'Login successful'));
+        }
     }
 }
 
