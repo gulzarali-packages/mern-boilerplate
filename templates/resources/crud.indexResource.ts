@@ -15,7 +15,7 @@ class templateNameIndexResource extends ApiResponse {
           total: data.total,
           last_page: Math.ceil(data.total / data.per_page),
         },
-        'templateNames fetched successfully.'
+        'templateName fetched successfully.'
       )
     );
   }

@@ -3,11 +3,14 @@ import mongoose from 'mongoose';
 import session from 'express-session';
 import bodyParser from 'body-parser';
 import compression from 'compression';
+import cors from 'cors';
 
 import passport from './config/passport.config';
 import flash from 'connect-flash';
 import router from './routes/api';
 import config from './config/config';
+import corsConfig from './config/config';
+
 import './observers/kernal';
 import httpResponseMiddleware from './middleware/HttpResponseMiddleware';
 
@@ -37,6 +40,7 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(cors(corsConfig));
 app.use('/api', router);
 
 app.use((req, res, next) => {
