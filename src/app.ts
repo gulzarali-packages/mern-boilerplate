@@ -9,12 +9,12 @@ import passport from './config/passport.config';
 import flash from 'connect-flash';
 import router from './routes/api';
 import config from './config/config';
-import corsConfig from './config/config';
+import corsConfig from './config/cors.config';
 
 import './observers/kernal';
 import httpResponseMiddleware from './middleware/HttpResponseMiddleware';
 
-let port = config.port;
+const port:any = config.port;
 const app = express();
 
 mongoose.set('strictQuery', false);
@@ -52,7 +52,6 @@ app.use((req, res, next) => {
 
 startServer();
 
-app.listen(3003, 'localhost', () => {
-  console.log('port:', port);
-  return console.log(`Express is listening at http://localhost:${config.port}`);
+app.listen(port, 'localhost', () => {
+  return console.log(`Express is listening at http://localhost:${port}`);
 });
