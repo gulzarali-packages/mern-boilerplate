@@ -77,3 +77,15 @@ SendEventJob.init();
 SendEventJob.add({message:'hi:'});
 SendEventJob.process();
 ```
+
+### HTTP client
+Http client is to make the http request with get, post, put, patch & delete
+```
+const client = new HttpClient('https://api.example.com');
+
+const data = await client.get<{ name: string }>('/users/123');
+console.log(data.name); // logs the name of the user with ID 123
+
+const response = await client.post<{ success: boolean }>('/users', { name: 'John Doe' });
+console.log(response.success); 
+```

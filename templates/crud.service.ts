@@ -57,13 +57,17 @@ class templateNameService {
     }
 
     async destroy(req) {
-        const { id } = req.params;
-        const result = await templateName.deleteOne({ _id: new ObjectId(id) });
-        if (result.deletedCount === 0) {
-            throw new Error(`Failed to delete templateName record with id ${id}`);
+        try {
+            const { id } = req.params;
+            const result = await templateName.deleteOne({ _id: new ObjectId(id) });
+            if (result && result.deletedCount === 1) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (error) {
             return false;
         }
-        return true;
     }
 }
 
