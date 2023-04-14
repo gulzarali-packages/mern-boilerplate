@@ -10,6 +10,7 @@ import flash from 'connect-flash';
 import router from './routes/api';
 import config from './config/config';
 import corsConfig from './config/cors.config';
+import './schedules/kernal';
 
 import './observers/kernal';
 import httpResponseMiddleware from './middleware/HttpResponseMiddleware';

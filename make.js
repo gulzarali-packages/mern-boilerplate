@@ -12,6 +12,7 @@ class Generator {
       "make:middleware": [(dir) => "./src/middleware/", ""],
       "make:seeder": [(dir) => "./src/database/seeders/", ""],
       "make:job": [(dir) => "./src/jobs/", "Job"],
+      "make:schedule": [(dir) => "./src/schedules/", "Schedule"],
       "make:observer": [(dir) => "./src/observers/", "Observer"],
     };
 
@@ -115,15 +116,15 @@ class Generator {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
-  generateObserverKernal() {
-    if (!fs.existsSync("./src/observers/kernal.ts")) {
-      this.createDirectoryIfNotExist('./src/observers');
+  generateKernalFile(dir,make_template) {
+    if (!fs.existsSync(`./src/${dir}/kernal.ts`)) {
+      this.createDirectoryIfNotExist(`./src/${dir}`);
 
       let template = fs.readFileSync(
-        `./templates/observer.kernal.ts`,
+        `./templates/${make_template}`,
         "utf8"
       );
-      fs.writeFileSync("./src/observers/kernal.ts", template);
+      fs.writeFileSync(`./src/${dir}/kernal.ts`, template);
     }
   }
 
@@ -147,8 +148,9 @@ class Generator {
     if (action) {
       template = template.replace(/actionName/g, action);
       ActionName = this.capitalizeFirstLetter(action);
-      if (postFix && postFix == "Observer") this.generateObserverKernal();
+      if (postFix && postFix == "Observer") this.generateKernalFile('observers','observer.kernal.ts');
     }
+    if (postFix && postFix == "Schedule") this.generateKernalFile('schedules','schedule.kernal.ts');
 
     const filePath = path.join(getDir(""), `${name}${ActionName}${postFix}.ts`);
     this.createDirectoryIfNotExist(getDir(""));
@@ -247,6 +249,7 @@ switch (command) {
     }
     break;
   case "make:job":
+  case "make:schedule":
   case "make:seeder":
   case "make:model":
   case "make:resource":

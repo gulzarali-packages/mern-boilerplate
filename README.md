@@ -78,6 +78,20 @@ SendEventJob.add({message:'hi:'});
 SendEventJob.process();
 ```
 
+#### scheduling jobs
+the cron jobs can be created by simply running the command as
+```
+npm run make:schedule FetchData
+```
+there you will have a FetchDataSchedule class under schedules directory. 
+Then after that you would have to register the scheduled commands inside the schedules/kernal.ts file as
+```
+import FetchDataSchedule from "./FetchDataSchedule";
+
+//the below schedule will be executed evry 10 minutes
+const fetchDataSchedule = new FetchDataSchedule('0 */10 * * * *');
+```
+
 ### HTTP client
 Http client is to make the http request with get, post, put, patch & delete
 ```
