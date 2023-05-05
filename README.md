@@ -103,3 +103,4 @@ console.log(data.name); // logs the name of the user with ID 123
 const response = await client.post<{ success: boolean }>('/users', { name: 'John Doe' });
 console.log(response.success); 
 ```
+

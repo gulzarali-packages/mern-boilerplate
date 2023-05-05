@@ -58,6 +58,18 @@ class AuthController {
             return res.status(500).json(new Error(error));
         }
     }
+
+    /**
+     * Google auth
+     */
+    async googleAuth(req, res){
+        try {
+            const result = await AuthService.googleAuth(req);
+            return res.status(200).json(result);
+        } catch (error) {
+            return res.status(500).json(new Error(error));
+        }
+    }
 }
 
 export default new AuthController();

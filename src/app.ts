@@ -1,18 +1,28 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import session from 'express-session';
-import bodyParser from 'body-parser';
+import bodyParser, { json } from 'body-parser';
 import compression from 'compression';
 import cors from 'cors';
+import fs from 'fs';
+import passport from 'passport';
 
-import passport from './config/passport.config';
+import './config/passport';
 import flash from 'connect-flash';
 import router from './routes/api';
+import authRouter from './routes/auth';
 import config from './config/config';
 import corsConfig from './config/cors.config';
-import './schedules/kernal';
+const scheduleKernelPath = './schedules/kernal';
+if (fs.existsSync(scheduleKernelPath)) {
+  import(scheduleKernelPath);
+}
 
-import './observers/kernal';
+const observerKernelPath = './observers/kernal';
+if (fs.existsSync(observerKernelPath)) {
+  import(observerKernelPath);
+}
+
 import httpResponseMiddleware from './middleware/HttpResponseMiddleware';
 
 const port: any = config.port;
@@ -43,6 +53,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(cors(corsConfig));
 app.use('/api', router);
+app.use('/auth', authRouter);
 
 app.use((req, res, next) => {
   res.status(404).json({

@@ -14,7 +14,15 @@ const userSchema = new Schema<IUser>({
   },
   password: {
     type: String,
-    required: true
+    required: false
+  },
+  provider: {
+    type: String,
+    required:false
+  },
+  providerId : {
+    type: String,
+    required: false
   }
 });
 

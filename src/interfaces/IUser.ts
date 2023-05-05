@@ -3,4 +3,6 @@ export default interface IUser extends Document {
     email: string;
     userName: string;
     password: string;
+    provider: string,
+    providerId: string
 }
