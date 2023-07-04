@@ -52,6 +52,9 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(cors(corsConfig));
+app.get('/', (req, res) => {
+  res.send('Welcome to nodeJs.');
+});
 app.use('/api', router);
 app.use('/auth', authRouter);
 
