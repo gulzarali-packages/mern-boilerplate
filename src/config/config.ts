@@ -11,6 +11,14 @@ const config = {
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
     callbackURL: process.env.CALLBACK_URL
+  },
+  database:{
+    cosmo:{
+      endPoint:'test',
+      key:'thfr',
+      databaseId:'1',
+      containerId:'23'
+    }
   }
 };
 
